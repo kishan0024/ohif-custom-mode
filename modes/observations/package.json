@@ -1,0 +1,15 @@
+{
+  "name": "@custom/mode-observations",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OHIF image review with study observations",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "keywords": [
+    "ohif-mode"
+  ],
+  "peerDependencies": {
+    "@ohif/mode-basic": "3.12.12",
+    "@custom/extension-observations": "0.1.0"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "custom-ohif-components",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Custom observation extension and mode for the existing Radiologist OHIF viewer",
+  "scripts": {
+    "link:viewer": "node scripts/link-viewer.cjs",
+    "dev": "npm run link:viewer && npm --prefix ../Radiologist-ohif-viewer run dev:observations",
+    "test": "node node_modules/jest/bin/jest.js --config extensions/observations/jest.config.js --runInBand"
+  }
+}

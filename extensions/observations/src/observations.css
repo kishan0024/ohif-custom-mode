@@ -1,0 +1,187 @@
+.observations-panel {
+  --observations-muted: hsl(var(--muted-foreground, 213 27% 70%));
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 20px 16px;
+  color: hsl(var(--foreground, 210 40% 98%));
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.observations-panel h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* OHIF's mobile drawer is 85vw wide; its inner side panel can be wider. */
+@media (max-width: 1023px) {
+  .observations-panel {
+    max-width: 85vw;
+  }
+}
+.observations-panel h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.observations-panel p {
+  margin: 0;
+}
+.observations-muted {
+  color: var(--observations-muted);
+}
+.observations-demo-note {
+  margin-top: 20px !important;
+  padding: 12px;
+  border: 1px solid hsl(var(--border, 215 25% 27%));
+  border-radius: 6px;
+  color: var(--observations-muted);
+  font-size: 12px;
+}
+.observations-demo-note strong {
+  display: block;
+  margin-bottom: 4px;
+  color: inherit;
+}
+.observations-study {
+  margin: 24px 0;
+}
+.observations-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.observations-study-uid {
+  color: var(--observations-muted);
+  font-size: 12px;
+}
+.observations-panel textarea,
+.observations-panel select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid hsl(var(--border, 215 25% 27%));
+  border-radius: 6px;
+  background: hsl(var(--background, 222 47% 11%));
+  color: inherit;
+  font: inherit;
+  caret-color: hsl(var(--primary, 211 100% 66%));
+}
+.observations-panel textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.observations-panel textarea::placeholder {
+  color: var(--observations-muted);
+  opacity: 1;
+}
+.observations-panel select {
+  margin-bottom: 8px;
+}
+.observations-panel
+  :is(textarea, select, button, .observations-list):focus-visible {
+  outline: 2px solid hsl(var(--primary, 211 100% 66%));
+  outline-offset: 3px;
+}
+.observations-panel ::selection {
+  background: #285a94;
+  color: #fff;
+}
+.observations-input-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 8px;
+  margin-top: 8px;
+  color: var(--observations-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.observations-panel button {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: hsl(var(--primary, 211 100% 66%));
+  color: hsl(var(--primary-foreground, 222 47% 11%));
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.observations-panel button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+.observations-panel :disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.observations-error:not(:empty) {
+  margin-top: 12px;
+  color: #ffb4b4;
+}
+.observations-confirmation:not(:empty) {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid #316e60;
+  border-radius: 6px;
+  color: #a5e5cf;
+}
+.observations-confirmation strong,
+.observations-confirmation span {
+  display: block;
+}
+.observations-confirmation span {
+  margin-top: 4px;
+  font-size: 12px;
+}
+.observations-history {
+  margin-top: 28px;
+}
+.observations-history ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.observations-history .observations-history-hint {
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+.observations-list {
+  max-height: min(40vh, 360px);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border, 215 25% 27%)) transparent;
+}
+.observations-entry-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.observations-entry-heading strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+.observations-history li {
+  padding: 16px 0;
+  border-top: 1px solid hsl(var(--border, 215 25% 27%));
+}
+.observations-history time {
+  color: var(--observations-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.observations-history li p {
+  margin-top: 8px;
+  white-space: pre-wrap;
+}
