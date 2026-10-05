@@ -115,7 +115,12 @@ export function StudyObservations({
   );
 }
 
-export default function ObservationPanel() {
+export default function ObservationPanel({ ReportComponent, hotkeysManager }: {
+  ReportComponent?: React.ComponentType<{ studyUID: string; hotkeysManager?: any }>;
+  hotkeysManager?: any;
+} = {}) {
+  const [view, setView] = useState("observations");
+  const [reportOpened, setReportOpened] = useState(false);
   const { StudyInstanceUIDs = [] } = useImageViewer() || {};
   const [chosenStudy, setChosenStudy] = useState("");
   const selectedStudy = StudyInstanceUIDs.includes(chosenStudy)
@@ -123,58 +128,48 @@ export default function ObservationPanel() {
     : StudyInstanceUIDs[0];
 
   return (
-    <div className="observations-panel">
-      <header>
-        <h2>Observations</h2>
-        <p className="observations-muted">
-          Record your findings while reviewing the images.
-        </p>
-      </header>
-      {observationStore.isDemo && (
-        <p className="observations-demo-note">
-          <strong>Demo mode</strong>
-          Observations stay in this session only and clear on refresh. Database
-          connection pending.
-        </p>
-      )}
-      {!selectedStudy ? (
-        <p className="observations-muted">
-          Open a study to write an observation.
-        </p>
-      ) : (
-        <>
+    <div className="observations-sidebar">
+      <div className="observations-panel observations-sidebar-context">
+        <header>
+          <h2>Observations</h2>
+          <p className="observations-muted">Record your findings while reviewing the images.</p>
+        </header>
+        {!selectedStudy ? (
+          <p className="observations-muted">Open a study to write an observation.</p>
+        ) : StudyInstanceUIDs.length > 1 ? (
           <div className="observations-study">
-            {StudyInstanceUIDs.length > 1 ? (
-              <>
-                <label
-                  className="observations-label"
-                  htmlFor="observation-study"
-                >
-                  Study to record against
-                </label>
-                <select
-                  id="observation-study"
-                  value={selectedStudy}
-                  onChange={(event) => setChosenStudy(event.target.value)}
-                >
-                  {StudyInstanceUIDs.map((uid, index) => (
-                    <option value={uid} key={uid}>
-                      Study {index + 1} · {uid}
-                    </option>
-                  ))}
-                </select>
-              </>
-            ) : (
-              <span className="observations-label">Study UID</span>
-            )}
-            <p className="observations-study-uid">{selectedStudy}</p>
+            <label className="observations-label" htmlFor="observation-study">Study to record against</label>
+            <select id="observation-study" value={selectedStudy}
+              onChange={(event) => setChosenStudy(event.target.value)}>
+              {StudyInstanceUIDs.map((uid, index) => (
+                <option value={uid} key={uid}>Study {index + 1} · {uid}</option>
+              ))}
+            </select>
           </div>
-          <StudyObservations
-            key={selectedStudy}
-            studyInstanceUID={selectedStudy}
-          />
-        </>
-      )}
+        ) : null}
+      </div>
+      {selectedStudy && <>
+        {ReportComponent && <div className="observations-view-switch" role="group" aria-label="Observations sidebar view">
+          <button type="button" aria-pressed={view === "observations"} onClick={() => setView("observations")}>Observations</button>
+          <button type="button" aria-pressed={view === "report"} onClick={() => { setReportOpened(true); setView("report"); }}>Report</button>
+        </div>}
+        {reportOpened && ReportComponent && <div hidden={view !== "report"} className="observations-report-container">
+          <ReportComponent key={selectedStudy} studyUID={selectedStudy} hotkeysManager={hotkeysManager} />
+        </div>}
+        {view === "observations" && (
+          <div className="observations-panel observations-sidebar-notes">
+            {observationStore.isDemo && <p className="observations-demo-note">
+              <strong>Demo mode</strong>
+              Observations stay in this session only and clear on refresh. Database connection pending.
+            </p>}
+            <div className="observations-study">
+              <span className="observations-label">Study UID</span>
+              <p className="observations-study-uid">{selectedStudy}</p>
+            </div>
+            <StudyObservations key={selectedStudy} studyInstanceUID={selectedStudy} />
+          </div>
+        )}
+      </>}
     </div>
   );
 }

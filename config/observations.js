@@ -2,7 +2,7 @@
 window.config = {
   routerBasename: '/',
   extensions: [],
-  modes: ['@custom/mode-observations'],
+  modes: [],
   showStudyList: true,
   showLoadingIndicator: true,
   maxNumberOfWebWorkers: 3,

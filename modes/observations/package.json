@@ -10,6 +10,7 @@
   ],
   "peerDependencies": {
     "@ohif/mode-basic": "3.12.12",
-    "@custom/extension-observations": "0.1.0"
+    "@custom/extension-observations": "0.1.0",
+    "@custom/extension-reporting": "0.1.0"
   }
 }

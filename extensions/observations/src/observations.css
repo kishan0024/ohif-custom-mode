@@ -185,3 +185,39 @@
   margin-top: 8px;
   white-space: pre-wrap;
 }
+
+.observations-sidebar {
+  width: 100%;
+  min-width: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.observations-sidebar-context { padding-bottom: 12px; }
+.observations-sidebar-context .observations-study { margin: 12px 0 0; }
+.observations-sidebar-notes { padding-top: 0; }
+.observations-view-switch {
+  display: flex;
+  gap: 4px;
+  padding: 0 12px 12px;
+}
+.observations-view-switch button {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid hsl(var(--border, 155 20% 18%));
+  border-radius: 4px;
+  color: hsl(var(--muted-foreground, 213 27% 70%));
+  background: hsl(var(--muted, 215 21% 11%));
+  cursor: pointer;
+}
+.observations-view-switch button[aria-pressed="true"] {
+  background: hsl(var(--accent, 155 45% 16%));
+  border-color: hsl(var(--highlight, 151 57% 60%));
+  color: #fff;
+}
+.observations-view-switch button:hover { background: hsl(var(--accent, 155 45% 16%)); }
+.observations-view-switch button:focus-visible { outline: 2px solid hsl(var(--highlight, 151 57% 60%)); outline-offset: 2px; }
+.observations-report-container[hidden] { display: none; }
+@media (max-width: 1023px) {
+  .observations-sidebar { max-width: 85vw; }
+}

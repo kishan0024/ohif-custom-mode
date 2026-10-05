@@ -9,6 +9,7 @@
     "ohif-extension"
   ],
   "peerDependencies": {
+    "@custom/extension-reporting": "0.1.0",
     "@ohif/core": "3.12.12",
     "@ohif/ui-next": "3.12.12",
     "react": "18.3.1"

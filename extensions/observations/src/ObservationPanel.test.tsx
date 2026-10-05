@@ -103,3 +103,23 @@ test("lists every submitted observation newest first with a total and keeps earl
     within(list).getAllByText("Observation", { exact: false }),
   ).toHaveLength(3);
 });
+
+
+test("opens reports inside the sidebar, shares the selected study, and retains the mounted report", () => {
+  mockStudies = ["sidebar-study-a", "sidebar-study-b"];
+  const Report = ({ studyUID }) => <input aria-label="Sidebar report" defaultValue={studyUID} />;
+  render(<ObservationPanel ReportComponent={Report} />);
+  fireEvent.change(screen.getByLabelText("New observation"), { target: { value: "Keep my note" } });
+  fireEvent.click(screen.getByRole("button", { name: "Report", exact: true }));
+  const report = screen.getByLabelText("Sidebar report") as HTMLInputElement;
+  expect(report.value).toBe("sidebar-study-a");
+  expect(report.closest(".observations-sidebar")).toBeTruthy();
+  fireEvent.change(report, { target: { value: "Keep my report" } });
+  fireEvent.click(screen.getByRole("button", { name: "Observations", exact: true }));
+  expect((screen.getByLabelText("New observation") as HTMLTextAreaElement).value).toBe("Keep my note");
+  fireEvent.click(screen.getByRole("button", { name: "Report", exact: true }));
+  expect(screen.getByLabelText("Sidebar report")).toBe(report);
+  expect(report.value).toBe("Keep my report");
+  fireEvent.change(screen.getByLabelText("Study to record against"), { target: { value: "sidebar-study-b" } });
+  expect((screen.getByLabelText("Sidebar report") as HTMLInputElement).value).toBe("sidebar-study-b");
+});

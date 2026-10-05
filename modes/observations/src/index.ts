@@ -12,6 +12,7 @@ const observationsPanel = '@custom/extension-observations.panelModule.observatio
 export const extensionDependencies = {
   ...basicDependencies,
   '@custom/extension-observations': '^0.1.0',
+  '@custom/extension-reporting': '^0.1.0',
 };
 
 // Extend the installed basic mode instead of duplicating its tools or viewports.

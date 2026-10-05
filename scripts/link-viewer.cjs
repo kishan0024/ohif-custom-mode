@@ -14,10 +14,10 @@ if (!fs.existsSync(path.join(appRoot, 'pluginConfig.json')) ||
 
 const links = [
   [path.join(customRoot, 'node_modules'), path.join(viewerRoot, 'node_modules')],
-  ...['extension', 'mode'].map((kind, index) => [
-    path.join(viewerRoot, `node_modules/@custom/${kind}-observations`),
-    path.join(customRoot, `${index === 0 ? 'extensions' : 'modes'}/observations`),
-  ]),
+  ...['observations', 'reporting'].flatMap(feature => (feature === 'observations' ? ['extension', 'mode'] : ['extension']).map((kind, index) => [
+    path.join(viewerRoot, `node_modules/@custom/${kind}-${feature}`),
+    path.join(customRoot, `${index === 0 ? 'extensions' : 'modes'}/${feature}`),
+  ])),
 ];
 
 // Validate before changing anything; never overwrite an existing package.
@@ -31,7 +31,13 @@ for (const [link, target] of links) {
 
 const configTarget = path.join(appRoot, 'public/config/observations.js');
 const config = fs.readFileSync(path.join(customRoot, 'config/observations.js'), 'utf8');
-if (fs.existsSync(configTarget) && fs.readFileSync(configTarget, 'utf8') !== config) {
+// Migrate only the known generated configs, preserving protection for custom edits.
+const supportedConfigs = [
+  config,
+  config.replace('modes: []', "modes: ['@custom/mode-observations']"),
+  config.replace('modes: []', "modes: ['@custom/mode-observations', '@custom/mode-reporting']"),
+];
+if (fs.existsSync(configTarget) && !supportedConfigs.includes(fs.readFileSync(configTarget, 'utf8'))) {
   throw new Error(`Existing viewer config differs; review it before linking: ${configTarget}`);
 }
 
@@ -44,9 +50,11 @@ for (const [link, target] of links) {
 
 const pluginsFile = path.join(appRoot, 'pluginConfig.json');
 const plugins = readJSON(pluginsFile);
+plugins.modes = plugins.modes.filter(entry => (entry.packageName || entry) !== '@custom/mode-reporting');
 for (const [group, packageName] of [
   ['extensions', '@custom/extension-observations'],
   ['modes', '@custom/mode-observations'],
+  ['extensions', '@custom/extension-reporting'],
 ]) {
   if (!plugins[group].some(entry => (entry.packageName || entry) === packageName)) {
     plugins[group].push({ packageName });
@@ -62,5 +70,6 @@ writeJSON(appFile, app);
 const rootFile = path.join(viewerRoot, 'package.json');
 const root = readJSON(rootFile);
 root.scripts['dev:observations'] = 'npm --prefix platform/app run dev:observations';
+root.scripts['dev:reporting'] = 'npm --prefix platform/app run dev:observations';
 writeJSON(rootFile, root);
-console.log('Custom mode and extension linked to the existing Radiologist-ohif-viewer.');
+console.log('Observation Viewer with integrated reporting linked to the existing Radiologist-ohif-viewer.');

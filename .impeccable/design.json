@@ -1,0 +1,535 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T18:48:22.894586+00:00",
+  "title": "Design System: OHIF Reporting Viewer",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Primary",
+        "tonalRamp": [
+          "oklch(15.00% 0.10788 160.44)",
+          "oklch(26.43% 0.10788 160.44)",
+          "oklch(37.86% 0.10788 160.44)",
+          "oklch(49.29% 0.10788 160.44)",
+          "oklch(60.71% 0.10788 160.44)",
+          "oklch(72.14% 0.10788 160.44)",
+          "oklch(83.57% 0.10788 160.44)",
+          "oklch(95.00% 0.10788 160.44)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Primary hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.09495 159.32)",
+          "oklch(26.43% 0.09495 159.32)",
+          "oklch(37.86% 0.09495 159.32)",
+          "oklch(49.29% 0.09495 159.32)",
+          "oklch(60.71% 0.09495 159.32)",
+          "oklch(72.14% 0.09495 159.32)",
+          "oklch(83.57% 0.09495 159.32)",
+          "oklch(95.00% 0.09495 159.32)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.02626 179.02)",
+          "oklch(26.43% 0.02626 179.02)",
+          "oklch(37.86% 0.02626 179.02)",
+          "oklch(49.29% 0.02626 179.02)",
+          "oklch(60.71% 0.02626 179.02)",
+          "oklch(72.14% 0.02626 179.02)",
+          "oklch(83.57% 0.02626 179.02)",
+          "oklch(95.00% 0.02626 179.02)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.02169 175.81)",
+          "oklch(26.43% 0.02169 175.81)",
+          "oklch(37.86% 0.02169 175.81)",
+          "oklch(49.29% 0.02169 175.81)",
+          "oklch(60.71% 0.02169 175.81)",
+          "oklch(72.14% 0.02169 175.81)",
+          "oklch(83.57% 0.02169 175.81)",
+          "oklch(95.00% 0.02169 175.81)"
+        ]
+      },
+      "control-label": {
+        "role": "neutral",
+        "displayName": "Control label",
+        "tonalRamp": [
+          "oklch(15.00% 0.02772 162.33)",
+          "oklch(26.43% 0.02772 162.33)",
+          "oklch(37.86% 0.02772 162.33)",
+          "oklch(49.29% 0.02772 162.33)",
+          "oklch(60.71% 0.02772 162.33)",
+          "oklch(72.14% 0.02772 162.33)",
+          "oklch(83.57% 0.02772 162.33)",
+          "oklch(95.00% 0.02772 162.33)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "surround": {
+        "role": "neutral",
+        "displayName": "Surround",
+        "tonalRamp": [
+          "oklch(15.00% 0.00345 174.48)",
+          "oklch(26.43% 0.00345 174.48)",
+          "oklch(37.86% 0.00345 174.48)",
+          "oklch(49.29% 0.00345 174.48)",
+          "oklch(60.71% 0.00345 174.48)",
+          "oklch(72.14% 0.00345 174.48)",
+          "oklch(83.57% 0.00345 174.48)",
+          "oklch(95.00% 0.00345 174.48)"
+        ]
+      },
+      "toolbar": {
+        "role": "neutral",
+        "displayName": "Toolbar",
+        "tonalRamp": [
+          "oklch(15.00% 0.00414 157.18)",
+          "oklch(26.43% 0.00414 157.18)",
+          "oklch(37.86% 0.00414 157.18)",
+          "oklch(49.29% 0.00414 157.18)",
+          "oklch(60.71% 0.00414 157.18)",
+          "oklch(72.14% 0.00414 157.18)",
+          "oklch(83.57% 0.00414 157.18)",
+          "oklch(95.00% 0.00414 157.18)"
+        ]
+      },
+      "context-chip": {
+        "role": "neutral",
+        "displayName": "Context chip",
+        "tonalRamp": [
+          "oklch(15.00% 0.00665 160.07)",
+          "oklch(26.43% 0.00665 160.07)",
+          "oklch(37.86% 0.00665 160.07)",
+          "oklch(49.29% 0.00665 160.07)",
+          "oklch(60.71% 0.00665 160.07)",
+          "oklch(72.14% 0.00665 160.07)",
+          "oklch(83.57% 0.00665 160.07)",
+          "oklch(95.00% 0.00665 160.07)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "tonalRamp": [
+          "oklch(15.00% 0.00849 168.74)",
+          "oklch(26.43% 0.00849 168.74)",
+          "oklch(37.86% 0.00849 168.74)",
+          "oklch(49.29% 0.00849 168.74)",
+          "oklch(60.71% 0.00849 168.74)",
+          "oklch(72.14% 0.00849 168.74)",
+          "oklch(83.57% 0.00849 168.74)",
+          "oklch(95.00% 0.00849 168.74)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Divider",
+        "tonalRamp": [
+          "oklch(15.00% 0.00415 157.18)",
+          "oklch(26.43% 0.00415 157.18)",
+          "oklch(37.86% 0.00415 157.18)",
+          "oklch(49.29% 0.00415 157.18)",
+          "oklch(60.71% 0.00415 157.18)",
+          "oklch(72.14% 0.00415 157.18)",
+          "oklch(83.57% 0.00415 157.18)",
+          "oklch(95.00% 0.00415 157.18)"
+        ]
+      },
+      "button-hover": {
+        "role": "neutral",
+        "displayName": "Button hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.00579 153.78)",
+          "oklch(26.43% 0.00579 153.78)",
+          "oklch(37.86% 0.00579 153.78)",
+          "oklch(49.29% 0.00579 153.78)",
+          "oklch(60.71% 0.00579 153.78)",
+          "oklch(72.14% 0.00579 153.78)",
+          "oklch(83.57% 0.00579 153.78)",
+          "oklch(95.00% 0.00579 153.78)"
+        ]
+      },
+      "button-hover-line": {
+        "role": "neutral",
+        "displayName": "Button hover line",
+        "tonalRamp": [
+          "oklch(15.00% 0.02936 161.88)",
+          "oklch(26.43% 0.02936 161.88)",
+          "oklch(37.86% 0.02936 161.88)",
+          "oklch(49.29% 0.02936 161.88)",
+          "oklch(60.71% 0.02936 161.88)",
+          "oklch(72.14% 0.02936 161.88)",
+          "oklch(83.57% 0.02936 161.88)",
+          "oklch(95.00% 0.02936 161.88)"
+        ]
+      },
+      "tool-ink": {
+        "role": "neutral",
+        "displayName": "Tool ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.02738 166.36)",
+          "oklch(26.43% 0.02738 166.36)",
+          "oklch(37.86% 0.02738 166.36)",
+          "oklch(49.29% 0.02738 166.36)",
+          "oklch(60.71% 0.02738 166.36)",
+          "oklch(72.14% 0.02738 166.36)",
+          "oklch(83.57% 0.02738 166.36)",
+          "oklch(95.00% 0.02738 166.36)"
+        ]
+      },
+      "tool-line": {
+        "role": "neutral",
+        "displayName": "Tool line",
+        "tonalRamp": [
+          "oklch(15.00% 0.00919 161.34)",
+          "oklch(26.43% 0.00919 161.34)",
+          "oklch(37.86% 0.00919 161.34)",
+          "oklch(49.29% 0.00919 161.34)",
+          "oklch(60.71% 0.00919 161.34)",
+          "oklch(72.14% 0.00919 161.34)",
+          "oklch(83.57% 0.00919 161.34)",
+          "oklch(95.00% 0.00919 161.34)"
+        ]
+      },
+      "tool-hover": {
+        "role": "neutral",
+        "displayName": "Tool hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.00497 165.01)",
+          "oklch(26.43% 0.00497 165.01)",
+          "oklch(37.86% 0.00497 165.01)",
+          "oklch(49.29% 0.00497 165.01)",
+          "oklch(60.71% 0.00497 165.01)",
+          "oklch(72.14% 0.00497 165.01)",
+          "oklch(83.57% 0.00497 165.01)",
+          "oklch(95.00% 0.00497 165.01)"
+        ]
+      },
+      "tool-hover-line": {
+        "role": "neutral",
+        "displayName": "Tool hover line",
+        "tonalRamp": [
+          "oklch(15.00% 0.03512 160.23)",
+          "oklch(26.43% 0.03512 160.23)",
+          "oklch(37.86% 0.03512 160.23)",
+          "oklch(49.29% 0.03512 160.23)",
+          "oklch(60.71% 0.03512 160.23)",
+          "oklch(72.14% 0.03512 160.23)",
+          "oklch(83.57% 0.03512 160.23)",
+          "oklch(95.00% 0.03512 160.23)"
+        ]
+      },
+      "tool-active-ink": {
+        "role": "primary",
+        "displayName": "Tool active ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.12080 156.63)",
+          "oklch(26.43% 0.12080 156.63)",
+          "oklch(37.86% 0.12080 156.63)",
+          "oklch(49.29% 0.12080 156.63)",
+          "oklch(60.71% 0.12080 156.63)",
+          "oklch(72.14% 0.12080 156.63)",
+          "oklch(83.57% 0.12080 156.63)",
+          "oklch(95.00% 0.12080 156.63)"
+        ]
+      },
+      "tool-active-line": {
+        "role": "primary",
+        "displayName": "Tool active line",
+        "tonalRamp": [
+          "oklch(15.00% 0.15155 155.42)",
+          "oklch(26.43% 0.15155 155.42)",
+          "oklch(37.86% 0.15155 155.42)",
+          "oklch(49.29% 0.15155 155.42)",
+          "oklch(60.71% 0.15155 155.42)",
+          "oklch(72.14% 0.15155 155.42)",
+          "oklch(83.57% 0.15155 155.42)",
+          "oklch(95.00% 0.15155 155.42)"
+        ]
+      },
+      "tool-active-surface": {
+        "role": "primary",
+        "displayName": "Tool active surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.01818 155.81)",
+          "oklch(26.43% 0.01818 155.81)",
+          "oklch(37.86% 0.01818 155.81)",
+          "oklch(49.29% 0.01818 155.81)",
+          "oklch(60.71% 0.01818 155.81)",
+          "oklch(72.14% 0.01818 155.81)",
+          "oklch(83.57% 0.01818 155.81)",
+          "oklch(95.00% 0.01818 155.81)"
+        ]
+      },
+      "select-line": {
+        "role": "neutral",
+        "displayName": "Select line",
+        "tonalRamp": [
+          "oklch(15.00% 0.01597 160.59)",
+          "oklch(26.43% 0.01597 160.59)",
+          "oklch(37.86% 0.01597 160.59)",
+          "oklch(49.29% 0.01597 160.59)",
+          "oklch(60.71% 0.01597 160.59)",
+          "oklch(72.14% 0.01597 160.59)",
+          "oklch(83.57% 0.01597 160.59)",
+          "oklch(95.00% 0.01597 160.59)"
+        ]
+      },
+      "selection": {
+        "role": "neutral",
+        "displayName": "Selection",
+        "tonalRamp": [
+          "oklch(15.00% 0.03319 162.26)",
+          "oklch(26.43% 0.03319 162.26)",
+          "oklch(37.86% 0.03319 162.26)",
+          "oklch(49.29% 0.03319 162.26)",
+          "oklch(60.71% 0.03319 162.26)",
+          "oklch(72.14% 0.03319 162.26)",
+          "oklch(83.57% 0.03319 162.26)",
+          "oklch(95.00% 0.03319 162.26)"
+        ]
+      },
+      "patient-label": {
+        "role": "neutral",
+        "displayName": "Patient label",
+        "tonalRamp": [
+          "oklch(15.00% 0.02398 169.93)",
+          "oklch(26.43% 0.02398 169.93)",
+          "oklch(37.86% 0.02398 169.93)",
+          "oklch(49.29% 0.02398 169.93)",
+          "oklch(60.71% 0.02398 169.93)",
+          "oklch(72.14% 0.02398 169.93)",
+          "oklch(83.57% 0.02398 169.93)",
+          "oklch(95.00% 0.02398 169.93)"
+        ]
+      },
+      "table-line": {
+        "role": "neutral",
+        "displayName": "Table line",
+        "tonalRamp": [
+          "oklch(15.00% 0.01779 159.06)",
+          "oklch(26.43% 0.01779 159.06)",
+          "oklch(37.86% 0.01779 159.06)",
+          "oklch(49.29% 0.01779 159.06)",
+          "oklch(60.71% 0.01779 159.06)",
+          "oklch(72.14% 0.01779 159.06)",
+          "oklch(83.57% 0.01779 159.06)",
+          "oklch(95.00% 0.01779 159.06)"
+        ]
+      },
+      "code-surface": {
+        "role": "neutral",
+        "displayName": "Code surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00663 160.07)",
+          "oklch(26.43% 0.00663 160.07)",
+          "oklch(37.86% 0.00663 160.07)",
+          "oklch(49.29% 0.00663 160.07)",
+          "oklch(60.71% 0.00663 160.07)",
+          "oklch(72.14% 0.00663 160.07)",
+          "oklch(83.57% 0.00663 160.07)",
+          "oklch(95.00% 0.00663 160.07)"
+        ]
+      },
+      "unsaved": {
+        "role": "neutral",
+        "displayName": "Unsaved",
+        "tonalRamp": [
+          "oklch(15.00% 0.09619 76.14)",
+          "oklch(26.43% 0.09619 76.14)",
+          "oklch(37.86% 0.09619 76.14)",
+          "oklch(49.29% 0.09619 76.14)",
+          "oklch(60.71% 0.09619 76.14)",
+          "oklch(72.14% 0.09619 76.14)",
+          "oklch(83.57% 0.09619 76.14)",
+          "oklch(95.00% 0.09619 76.14)"
+        ]
+      },
+      "error-ink": {
+        "role": "neutral",
+        "displayName": "Error ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.11877 37.34)",
+          "oklch(26.43% 0.11877 37.34)",
+          "oklch(37.86% 0.11877 37.34)",
+          "oklch(49.29% 0.11877 37.34)",
+          "oklch(60.71% 0.11877 37.34)",
+          "oklch(72.14% 0.11877 37.34)",
+          "oklch(83.57% 0.11877 37.34)",
+          "oklch(95.00% 0.11877 37.34)"
+        ]
+      },
+      "error-surface": {
+        "role": "neutral",
+        "displayName": "Error surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.01560 42.39)",
+          "oklch(26.43% 0.01560 42.39)",
+          "oklch(37.86% 0.01560 42.39)",
+          "oklch(49.29% 0.01560 42.39)",
+          "oklch(60.71% 0.01560 42.39)",
+          "oklch(72.14% 0.01560 42.39)",
+          "oklch(83.57% 0.01560 42.39)",
+          "oklch(95.00% 0.01560 42.39)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "document": {
+        "displayName": "Report document",
+        "purpose": "Default report text; authored formatting can override this."
+      },
+      "label": {
+        "displayName": "Patient metadata label",
+        "purpose": "Uppercase patient-field captions."
+      }
+    },
+    "shadows": [
+      {
+        "name": "table-menu",
+        "value": "0 8px 20px #19382a14",
+        "purpose": "Floating table editing menu."
+      },
+      {
+        "name": "report-launcher",
+        "value": "0 5px 20px #0003",
+        "purpose": "Write report button over the imaging workspace."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-color-transition",
+        "value": "background-color 140ms ease-out, border-color 140ms ease-out",
+        "purpose": "Reporting buttons; removed under prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "header-wrap",
+        "value": "1100px"
+      },
+      {
+        "name": "phone",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Save Draft",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary browser-local draft action.",
+      "html": "<button class=\"ds-save\">Save Draft</button>",
+      "css": ".ds-save{font-family:Arial,Helvetica,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:7px 14px;border:1px solid #e1e8e5;border-radius:8px;font-size:12px;font-weight:600;line-height:1.5;cursor:pointer;white-space:nowrap;transition:background-color 140ms ease-out,border-color 140ms ease-out;background:#197b53;color:#fff;border-color:#197b53;}.ds-save:not(:disabled):hover{background:#126441;border-color:#126441;}.ds-save:focus-visible{outline:2px solid #197b53;outline-offset:3px;}.ds-save:disabled{opacity:.65;cursor:default;}@media(prefers-reduced-motion:reduce){.ds-save{transition:none;}}"
+    },
+    {
+      "name": "Preview",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary report-preview action.",
+      "html": "<button class=\"ds-preview\">Preview</button>",
+      "css": ".ds-preview{font-family:Arial,Helvetica,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:7px 14px;border:1px solid #e1e8e5;border-radius:8px;font-size:12px;font-weight:600;line-height:1.5;cursor:pointer;white-space:nowrap;transition:background-color 140ms ease-out,border-color 140ms ease-out;background:#fff;color:#122521;}.ds-preview:not(:disabled):hover{background:#f3f7f4;border-color:#a9bfb3;}.ds-preview:focus-visible{outline:2px solid #197b53;outline-offset:3px;}.ds-preview:disabled{opacity:.4;cursor:default;}@media(prefers-reduced-motion:reduce){.ds-preview{transition:none;}}"
+    },
+    {
+      "name": "Formatting Tool",
+      "kind": "button",
+      "refersTo": "tool",
+      "description": "Pressed formatting state with an inline bold icon.",
+      "html": "<button class=\"ds-tool\" type=\"button\" aria-label=\"Bold\" aria-pressed=\"true\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 12h9a4 4 0 0 1 0 8H6z\"/><path d=\"M6 4h8a4 4 0 0 1 0 8H6z\"/></svg></button>",
+      "css": ".ds-tool{display:inline-flex;align-items:center;justify-content:center;width:39px;height:30px;padding:0;border:1px solid #e1e8e4;border-radius:4px;background:#fff;color:#63776e;cursor:pointer;transition:background-color 140ms ease-out,border-color 140ms ease-out;}.ds-tool:not(:disabled):hover{background:#f8fcfa;border-color:#abc5b6;}.ds-tool[aria-pressed=\"true\"]{color:#16814f;border-color:#1da965;background:#e7f4eb;}.ds-tool:focus-visible{outline:2px solid #197b53;outline-offset:3px;}.ds-tool:disabled{opacity:.4;cursor:default;}@media(max-width:600px){.ds-tool{width:32px;height:32px;}}@media(prefers-reduced-motion:reduce){.ds-tool{transition:none;}}"
+    },
+    {
+      "name": "Template Select",
+      "kind": "input",
+      "refersTo": "select",
+      "description": "Native selection control with the corrected label color.",
+      "html": "<span class=\"ds-select\"><select aria-label=\"Report template\"><option>Select template</option><option>Blank report</option></select><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/></svg></span>",
+      "css": ".ds-select{font-family:Arial,Helvetica,sans-serif;display:inline-flex;align-items:center;position:relative;height:36px;min-width:200px;border:1px solid #d3dfd8;border-radius:7px;background:#fff;color:#586b61;}.ds-select select{font-family:Arial,Helvetica,sans-serif;width:100%;height:100%;appearance:none;background:transparent;border:none;border-radius:inherit;padding:0 29px 0 11px;color:inherit;font-size:12px;cursor:pointer;}.ds-select select:focus-visible{outline:2px solid #197b53;outline-offset:3px;}.ds-select option{background:#fff;color:#122521;}.ds-select svg{position:absolute;right:10px;pointer-events:none;color:#71837a;}"
+    },
+    {
+      "name": "Patient Context Chip",
+      "kind": "chip",
+      "refersTo": "context-chip",
+      "description": "Compact patient context; unavailable values use an em dash.",
+      "html": "<div class=\"ds-chip\"><span>Patient</span><strong>\u2014</strong></div>",
+      "css": ".ds-chip{font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;gap:7px;min-width:0;max-width:300px;padding:4px 10px;border-radius:8px;background:#e9eeeb;color:#122521;white-space:nowrap;line-height:1.5;}.ds-chip span{flex-shrink:0;color:#586b61;font-size:9px;font-weight:700;letter-spacing:.055em;text-transform:uppercase;}.ds-chip strong{overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:600;}"
+    },
+    {
+      "name": "Patient Details",
+      "kind": "card",
+      "refersTo": "patient-details",
+      "description": "Two-column metadata card that becomes one column on phones.",
+      "html": "<dl class=\"ds-patient\"><div class=\"ds-field\"><dt>Patient name</dt><dd>\u2014</dd></div><div class=\"ds-field\"><dt>Patient ID</dt><dd>\u2014</dd></div></dl>",
+      "css": ".ds-patient{font-family:Arial,Helvetica,sans-serif;display:grid;grid-template-columns:1fr 1fr;margin:0;padding:5px 22px;border:1px solid #e1e8e5;border-radius:10px;background:#fff;color:#122521;line-height:1.5;}.ds-field{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:43px;padding:8px;}.ds-field:nth-child(odd){margin-right:25px;}.ds-field:nth-child(even){position:relative;margin-left:25px;}.ds-field:nth-child(even):before{content:\"\";position:absolute;top:0;bottom:0;left:-26px;width:1px;background:#edf0ee;}.ds-field dt{color:#62746d;text-transform:uppercase;font-size:10px;font-weight:600;letter-spacing:.045em;flex-shrink:0;}.ds-field dd{margin:0;text-align:right;font-size:14px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;}@media(max-width:600px){.ds-patient{grid-template-columns:1fr;padding:6px 12px;}.ds-field{gap:14px;min-height:38px;padding:7px 0;margin:0!important;}.ds-field:before{display:none;}.ds-field:first-child{border-bottom:1px solid #edf0ee;}.ds-field dt{font-size:9px;}.ds-field dd{font-size:12px;}}"
+    },
+    {
+      "name": "Report Document",
+      "kind": "custom",
+      "refersTo": "document",
+      "description": "Editable document defaults, with no fabricated clinical content.",
+      "html": "<div class=\"ds-document\" contenteditable=\"true\" role=\"textbox\" aria-label=\"Report content\" aria-multiline=\"true\"><h2>Findings</h2><p><br></p></div>",
+      "css": ".ds-document{font-family:Arial,Helvetica,sans-serif;min-height:360px;padding:12px 0;outline:none;color:#122521;background:#fff;font-size:15px;line-height:1.7;caret-color:#197b53;overflow-wrap:anywhere;}.ds-document:focus-visible{outline:none;}.ds-document::selection,.ds-document ::selection{background:#d3eddf;color:#122521;}.ds-document h2{font-size:18px;font-weight:600;line-height:1.4;margin:0 0 8px;}.ds-document p{margin:0 0 12px;}@media(max-width:600px){.ds-document{min-height:250px;}}"
+    },
+    {
+      "name": "Back to Images",
+      "kind": "nav",
+      "refersTo": "button-secondary",
+      "description": "Compact navigation button that reveals the retained image workspace.",
+      "html": "<button class=\"ds-back\" aria-label=\"Back to images\" title=\"Back to images\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m12 19-7-7 7-7\"/><path d=\"M5 12h14\"/></svg></button>",
+      "css": ".ds-back{font-family:Arial,Helvetica,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:36px;padding:7px 14px;border:1px solid #e1e8e5;border-radius:8px;font-size:12px;font-weight:600;line-height:1.5;cursor:pointer;white-space:nowrap;transition:background-color 140ms ease-out,border-color 140ms ease-out;width:36px;padding:8px;margin-right:4px;background:#fff;color:#122521;}.ds-back:hover{background:#f3f7f4;border-color:#a9bfb3;}.ds-back:focus-visible{outline:2px solid #197b53;outline-offset:3px;}@media(prefers-reduced-motion:reduce){.ds-back{transition:none;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A report document with immediate access to study images.",
+    "overview": "This document records the implemented Reporting Viewer surface in `extensions/reporting`, registered through `modes/reporting`. The supplied screenshot (`/tmp/codex-clipboard-t3tgwT.png`) and [reporting brief](.impeccable/reporting-brief.md) establish its white document canvas, pale green-gray controls, fine borders, compact typography, and restrained green action. The descriptive direction above comes directly from that brief.\n\nThese tokens govern Reporting Viewer only. OHIF's dark imaging workspace and the existing observations extension retain their own visual systems. Preserve the visual boundary when switching between images and the report.",
+    "keyCharacteristics": [
+      "White writing surface with compact, pale green-gray controls.",
+      "Patient context remains visible above the document.",
+      "Green identifies the main save action and editing states.",
+      "Responsive wrapping keeps controls and patient details accessible."
+    ],
+    "rules": [
+      {
+        "name": "The Reporting Scope Rule",
+        "body": "Apply this palette only to Reporting Viewer; do not propagate it into OHIF's dark imaging UI or the observations extension.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "**Do** scope these tokens to Reporting Viewer and preserve the surrounding imaging and observations interfaces.",
+      "**Do** use the corrected control-label token for chip captions and selection labels.",
+      "**Do** preserve wrapping controls, single-column phone metadata, and an independently scrolling document.",
+      "**Do** show patient metadata from the selected study and an em dash for unavailable values.",
+      "**Do** keep browser-local storage disclosure visible and retain unsaved work after a save failure."
+    ],
+    "donts": [
+      "**Don't** introduce patient identities, author names, clinical findings, or claims of connected AI without real integration data.",
+      "**Don't** imply Save Draft uploads, signs, or shares a report; backend reporting and AI are not configured.",
+      "**Don't** substitute decorative cards or large display typography for the compact document controls established by the reference."
+    ]
+  }
+}

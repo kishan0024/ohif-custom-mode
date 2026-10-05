@@ -6,6 +6,7 @@ This is a local OHIF mode package, not a separate viewer application.
 - Entry point: `src/index.ts`
 - Viewer route: `/observations?StudyInstanceUIDs=<uid>`
 - Worklist label: **Observation Viewer**
+- Report component: `ReportSidebar` from `@custom/extension-reporting`, rendered inside the Observations panel. The mode retains the standard OHIF image layout.
 - Required custom panel: `@custom/extension-observations.panelModule.observations`
 
 The mode follows the derived-mode pattern in the installed OHIF 3.12.12 checkout:
@@ -13,7 +14,7 @@ The mode follows the derived-mode pattern in the installed OHIF 3.12.12 checkout
 1. Import the existing basic mode, its mode instance, route, and layout.
 2. Export a `modeInstance` that sets the mode ID, route name, and observation panel.
 3. Export the mode with its factory and extension dependencies.
-4. Link this package and the observation extension to the existing viewer.
+4. Link this package and the observation and reporting extensions to the existing viewer.
 
 The viewer supplies image rendering, study navigation, tools, SOP handlers, hanging protocol, and enter/exit lifecycle. Only the mode configuration lives here. Each factory invocation gets its own cleanup subscription array, and app-config mode overrides still work.
 
