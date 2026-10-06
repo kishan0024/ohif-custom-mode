@@ -1,9 +1,12 @@
+import { backendEnabled, type BackendReport } from "./backendReports";
 import type { JSONContent } from "@tiptap/core";
 
 export type Draft = {
   content: JSONContent;
   savedAt: string | null;
   dirty: boolean;
+  remoteReport?: BackendReport | null;
+  loaded?: boolean;
 };
 const drafts = new Map<string, Draft>();
 const prefix = "ohif.report-draft.v1:";
@@ -15,7 +18,7 @@ export const emptyDocument: JSONContent = {
 export function getDraft(studyUID: string): Draft {
   const cached = drafts.get(studyUID);
   if (cached) return cached;
-  const raw = localStorage.getItem(prefix + studyUID);
+  const raw = backendEnabled() ? null : localStorage.getItem(prefix + studyUID);
   let draft: Draft = { content: emptyDocument, savedAt: null, dirty: false };
   if (raw) {
     const saved = JSON.parse(raw);
@@ -38,7 +41,7 @@ export function getDraft(studyUID: string): Draft {
 
 export function updateDraft(studyUID: string, content: JSONContent): Draft {
   const previous = drafts.get(studyUID);
-  const draft = { content, savedAt: previous?.savedAt || null, dirty: true };
+  const draft = { ...previous, content, savedAt: previous?.savedAt || null, dirty: true };
   drafts.set(studyUID, draft);
   return draft;
 }
@@ -63,4 +66,16 @@ export function hasUnsavedDrafts() {
 
 export function clearSessionDrafts() {
   drafts.clear();
+}
+
+export function setRemoteDraft(studyUID: string, content: JSONContent, remoteReport: BackendReport | null): Draft {
+  const draft = { content, savedAt: remoteReport?.updated_at || null, dirty: false, remoteReport, loaded: true };
+  drafts.set(studyUID, draft);
+  return draft;
+}
+
+export function rememberRemoteReport(studyUID: string, report: BackendReport): Draft {
+  const draft = { ...getDraft(studyUID), remoteReport: report };
+  drafts.set(studyUID, draft);
+  return draft;
 }

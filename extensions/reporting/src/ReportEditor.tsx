@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyleKit } from "@tiptap/extension-text-style";
@@ -21,11 +21,14 @@ import {
   getDraft,
   saveDraft,
   updateDraft,
+  setRemoteDraft,
+  rememberRemoteReport,
   type Draft,
 } from "./reportRepository";
 import { templates, templateDocument } from "./templates";
 import type { StudyDetails } from "./useStudyDetails";
 import "./reporting.css";
+import { backendEnabled, loadBackendReport, startBackendReport, saveBackendReport } from "./backendReports";
 
 type Props = {
   studyUID: string;
@@ -55,6 +58,13 @@ export default function ReportEditor({
   });
   const [draft, setDraft] = useState(initial.draft);
   const [error, setError] = useState(initial.error);
+  const remote = backendEnabled();
+  const [loading, setLoading] = useState(remote && !initial.draft.loaded);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
+  const blocked = Boolean(initial.error) || loading || loadFailed;
+  const readOnly = remote && Boolean(draft.remoteReport && draft.remoteReport.status !== 'draft');
   const [preview, setPreview] = useState(false);
   const [pendingTemplate, setPendingTemplate] = useState("");
   const [templateId, setTemplateId] = useState("");
@@ -86,7 +96,7 @@ export default function ReportEditor({
       Placeholder.configure({ placeholder: "Start typing your report…" }),
     ],
     content: initial.draft.content,
-    editable: !initial.error && Boolean(studyUID),
+    editable: !blocked && !readOnly && Boolean(studyUID),
     shouldRerenderOnTransaction: true,
     editorProps: {
       attributes: {
@@ -103,23 +113,59 @@ export default function ReportEditor({
   });
 
   useEffect(() => {
-    editor?.setEditable(!preview && !initial.error && Boolean(studyUID), false);
-  }, [editor, preview, initial.error, studyUID]);
-
-  const save = () => {
-    if (!editor || initial.error || !studyUID) return;
-    try {
-      setDraft(saveDraft(studyUID, editor.getJSON()));
+    if (!remote || !editor || initial.draft.loaded) return;
+    let cancelled = false;
+    setLoading(true);
+    loadBackendReport(studyUID).then(report => {
+      if (cancelled) return;
+      editor.commands.setContent(report?.report || emptyDocument, { emitUpdate: false });
+      setDraft(setRemoteDraft(studyUID, editor.getJSON(), report));
       setError("");
-    } catch {
-      setError(
-        "Draft not saved. Browser storage may be full or unavailable. Your work is still open; remove large images or copy your report before leaving.",
-      );
+    }).catch(error => {
+      if (cancelled) return;
+      setLoadFailed(true);
+      setError(error.message);
+    }).finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [editor, studyUID, remote]);
+
+  useEffect(() => {
+    editor?.setEditable(!preview && !blocked && !readOnly && !saving && Boolean(studyUID), false);
+  }, [editor, preview, blocked, readOnly, saving, studyUID]);
+
+  const save = async () => {
+    if (!editor || blocked || readOnly || !studyUID || savingRef.current) return;
+    savingRef.current = true;
+    setSaving(true);
+    editor.setEditable(false, false);
+    try {
+      if (remote) {
+        let report = draft.remoteReport;
+        if (!report) {
+          report = await startBackendReport(studyUID, patient.modality);
+          // Preserve the created session for retry if the subsequent PATCH fails.
+          if (report.report.trim()) {
+            setLoadFailed(true);
+            throw new Error('An existing draft was found on the server. Reopen it before saving; copy your text first.');
+          }
+          setDraft(rememberRemoteReport(studyUID, report));
+        }
+        const saved = await saveBackendReport(studyUID, report, editor.getHTML());
+        setDraft(setRemoteDraft(studyUID, editor.getJSON(), saved));
+      } else {
+        setDraft(saveDraft(studyUID, editor.getJSON()));
+      }
+      setError("");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Draft could not be saved. Your work is still open.');
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
     }
   };
   const applyTemplate = (id: string) => {
     const content = templateDocument(id);
-    if (!content || !editor) return;
+    if (!content || !editor || blocked || readOnly || saving) return;
     editor.chain().focus().setContent(content).run();
     setTemplateId(id);
     setPendingTemplate("");
@@ -169,7 +215,7 @@ export default function ReportEditor({
           </div>
         </div>
         <div className="report-actions">
-          {!preview && (
+          {!preview && !blocked && !readOnly && !saving && (
             <SelectControl
               label="Report template"
               className="report-template-select"
@@ -191,7 +237,7 @@ export default function ReportEditor({
           <button
             className="report-button"
             onClick={() => setPreview(!preview)}
-            disabled={!editor || Boolean(initial.error)}
+            disabled={!editor || blocked || saving}
           >
             {preview ? (
               <Pencil size={14} aria-hidden="true" />
@@ -212,7 +258,7 @@ export default function ReportEditor({
             disabled={
               !editor ||
               !studyUID ||
-              Boolean(initial.error) ||
+              blocked || readOnly || saving ||
               (!draft.dirty && Boolean(draft.savedAt))
             }
           >
@@ -221,13 +267,13 @@ export default function ReportEditor({
             ) : (
               <Save size={14} aria-hidden="true" />
             )}
-            Save Draft
+            {saving ? "Saving…" : "Save Draft"}
           </button>
         </div>
       </header>
 
       <div className="report-main">
-        {!preview && editor && !initial.error && (
+        {!preview && editor && !blocked && !readOnly && !saving && (
           <EditorToolbar editor={editor} onError={setError} />
         )}
         {preview && (
@@ -266,7 +312,7 @@ export default function ReportEditor({
           <div className="report-error" role="alert">
             <AlertCircle size={17} aria-hidden="true" />
             <span>{error}</span>
-            {!initial.error && (
+            {!blocked && (
               <button aria-label="Dismiss message" onClick={() => setError("")}>
                 <X size={16} />
               </button>
@@ -296,13 +342,13 @@ export default function ReportEditor({
             role="status"
             aria-live="polite"
           >
-            {draft.dirty
+            {loading ? "Loading report…" : readOnly ? "Finalized report · read-only" : draft.dirty
               ? "Unsaved changes"
               : draft.savedAt
-                ? "Saved locally"
+                ? (remote ? "Saved to MediScribe" : "Saved locally")
                 : "New draft"}
           </span>
-          <span>Drafts are saved in this browser only.</span>
+          <span>{remote ? "Reports are saved to MediScribe." : "Drafts are saved in this browser only."}</span>
         </footer>
       </div>
     </section>

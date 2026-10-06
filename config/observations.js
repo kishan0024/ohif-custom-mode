@@ -8,6 +8,12 @@ window.config = {
   maxNumberOfWebWorkers: 3,
   investigationalUseDialog: { option: 'never' },
   defaultDataSourceName: 'orthanc',
+  reporting: {
+    apiBaseUrl: '/api',
+    // The embedding application may replace this with its authenticated token provider.
+    // Use the access token returned after selecting the active clinic.
+    getAccessToken: () => window.sessionStorage.getItem('mediscribe.accessToken') || '',
+  },
   dataSources: [
     {
       namespace: '@ohif/extension-default.dataSourcesModule.dicomweb',
