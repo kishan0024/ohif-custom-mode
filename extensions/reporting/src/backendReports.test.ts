@@ -3,13 +3,46 @@ const studyId = '11111111-1111-1111-1111-111111111111';
 const report = { id: '22222222-2222-2222-2222-222222222222', study_id: studyId, report: '<p>Draft</p>', status: 'draft', updated_at: '2026-10-06T10:00:00Z' };
 const reply = (data: unknown, status = 200) => ({ ok: status < 400, status, json: async () => ({ status: status < 400, data }) });
 beforeEach(() => {
+  history.replaceState({}, '', '/');
   (window as any).config = { reporting: { apiBaseUrl: '/api', getAccessToken: () => 'test-token', resolveStudy: () => ({ studyId }) } };
   global.fetch = jest.fn();
+});
+it('loads the specific report ID from the launch URL with a bearer token', async () => {
+  delete (window as any).config.reporting.resolveStudy;
+  history.replaceState({}, '', `/?StudyInstanceUIDs=uid&studyId=${studyId}&reportId=${report.id}`);
+  (fetch as jest.Mock).mockResolvedValue(reply(report));
+  await expect(loadBackendReport('uid')).resolves.toEqual(report);
+  expect(fetch).toHaveBeenCalledWith(`/api/reports/${report.id}/`, expect.objectContaining({
+    headers: expect.objectContaining({ Authorization: 'Bearer test-token' }),
+  }));
 });
 it('loads reports through authenticated requests scoped to the backend UUID', async () => {
   (fetch as jest.Mock).mockResolvedValue(reply({ reports: [report] }));
   expect(await loadBackendReport('dicom-uid')).toEqual(report);
   expect(fetch).toHaveBeenCalledWith(`/api/reports/?study_id=${studyId}`, expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer test-token' }) }));
+});
+it('loads and saves an existing report without a linked backend study', async () => {
+  delete (window as any).config.reporting.resolveStudy;
+  history.replaceState({}, '', `/?StudyInstanceUIDs=uid&reportId=${report.id}`);
+  const unlinked = { ...report, study_id: null };
+  (fetch as jest.Mock).mockResolvedValue(reply(unlinked));
+  await expect(loadBackendReport('uid')).resolves.toEqual(unlinked);
+  await expect(saveBackendReport('uid', unlinked, '<p>Updated</p>')).resolves.toEqual(unlinked);
+  expect(fetch).toHaveBeenLastCalledWith(`/api/reports/${report.id}/update/`, expect.objectContaining({ method: 'PATCH' }));
+});
+it('rejects a different report even when no backend study was supplied', async () => {
+  delete (window as any).config.reporting.resolveStudy;
+  history.replaceState({}, '', `/?StudyInstanceUIDs=uid&reportId=${report.id}`);
+  (fetch as jest.Mock).mockResolvedValue(reply({ ...report, id: studyId }));
+  await expect(loadBackendReport('uid')).rejects.toThrow('different report');
+});
+it('reuses the explicit report instead of creating a studyless session', async () => {
+  delete (window as any).config.reporting.resolveStudy;
+  history.replaceState({}, '', `/?StudyInstanceUIDs=uid&reportId=${report.id}`);
+  (fetch as jest.Mock).mockResolvedValue(reply({ ...report, study_id: null }));
+  await startBackendReport('uid', 'CT');
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledWith(`/api/reports/${report.id}/`, expect.objectContaining({ method: 'GET' }));
 });
 it('rejects another study report and ambiguous revisions', async () => {
   (fetch as jest.Mock).mockResolvedValueOnce(reply({ reports: [{ ...report, study_id: 'other' }] })).mockResolvedValueOnce(reply({ reports: [report, report] }));
@@ -20,7 +53,17 @@ it('never applies a URL study mapping to another DICOM study', () => {
   delete (window as any).config.reporting.resolveStudy;
   history.replaceState({}, '', `/?StudyInstanceUIDs=one&studyId=${studyId}`);
   expect(resolveContext('one').studyId).toBe(studyId);
-  expect(() => resolveContext('two')).toThrow('valid studyId');
+  expect(() => resolveContext('two')).toThrow('does not match');
+});
+it('distinguishes missing backend context from malformed study and report IDs', () => {
+  delete (window as any).config.reporting.resolveStudy;
+  history.replaceState({}, '', '/?StudyInstanceUIDs=one');
+  expect(() => resolveContext('one')).toThrow('missing studyId');
+  history.replaceState({}, '', '/?StudyInstanceUIDs=one&studyId=1.2.3');
+  expect(() => resolveContext('one')).toThrow('invalid studyId');
+  history.replaceState({}, '', `/?StudyInstanceUIDs=one&studyId=${studyId}&reportId=bad`);
+  expect(() => resolveContext('one')).toThrow('invalid reportId');
+  expect(fetch).not.toHaveBeenCalled();
 });
 it('does not send requests without authentication', async () => {
   delete (window as any).config.reporting.getAccessToken;

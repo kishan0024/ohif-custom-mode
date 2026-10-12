@@ -1,12 +1,13 @@
 /** MediScribe API boundary. Tokens are supplied by the host, never by URL. */
+import { getLaunchAccessToken } from './launchAuth';
 export type BackendReport = {
   id: string;
-  study_id: string;
+  study_id: string | null;
   report: string;
   status: string;
   updated_at: string;
 };
-type Context = { studyId: string; reportId?: string };
+type Context = { studyId?: string; reportId?: string };
 type ReportingConfig = {
   apiBaseUrl?: string;
   getAccessToken?: () => string | Promise<string>;
@@ -20,18 +21,26 @@ export function resolveContext(uid: string): Context {
   const params = new URLSearchParams(window.location.search);
   // A URL context applies only to its single, exact DICOM study.
   const uids = params.getAll('StudyInstanceUIDs').flatMap(value => value.split(','));
-  const context = configured || (uids.length === 1 && uids[0] === uid
-    ? { studyId: params.get('studyId'), reportId: params.get('reportId') || undefined }
-    : undefined);
+  if (!configured && (uids.length !== 1 || uids[0] !== uid)) {
+    throw new Error('The selected DICOM study does not match this report launch. Reopen the correct study from the main app report.');
+  }
+  const context = configured || {
+    studyId: params.get('studyId') || undefined, reportId: params.get('reportId') || undefined,
+  };
   const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  if (!context?.studyId || !uuid.test(context.studyId) ||
-      (context.reportId && !uuid.test(context.reportId))) {
-    throw new Error('Open this viewer from a backend study with a valid studyId to use shared reports.');
+  if (!context.studyId && !context.reportId) {
+    throw new Error('The viewer launch is missing studyId or reportId. Opening from the OHIF study list supplies only the DICOM UID; use the main app report’s OHIF button.');
+  }
+  if (context.studyId && !uuid.test(context.studyId)) {
+    throw new Error('The viewer launch has an invalid studyId. Supply the backend Study UUID, not the DICOM UID, accession number, or display study ID.');
+  }
+  if (context.reportId && !uuid.test(context.reportId)) {
+    throw new Error('The viewer launch has an invalid reportId. Supply the backend Report UUID.');
   }
   return context;
 }
-async function request(path: string, method = 'GET', body?: unknown) {
-  const token = await config().getAccessToken?.();
+export async function request(path: string, method = 'GET', body?: unknown) {
+  const token = await (getLaunchAccessToken() ?? config().getAccessToken?.());
   if (!token) throw new Error('Sign in to MediScribe before loading or saving reports.');
   const base = config().apiBaseUrl;
   if (!base || !base.startsWith('/') || base.startsWith('//')) {
@@ -58,7 +67,8 @@ async function request(path: string, method = 'GET', body?: unknown) {
   return payload.data;
 }
 function validateReport(report: BackendReport, context: Context) {
-  if (report.study_id !== context.studyId) throw new Error('The report belongs to a different backend study.');
+  if (context.reportId && report.id !== context.reportId) throw new Error('The server returned a different report than the requested reportId.');
+  if (context.studyId && report.study_id !== context.studyId) throw new Error('The report belongs to a different backend study.');
   if (typeof report.report !== 'string' || !report.id ||
       Number.isNaN(Date.parse(report.updated_at))) throw new Error('The server returned an invalid report.');
   return report;
@@ -74,6 +84,9 @@ export async function loadBackendReport(uid: string): Promise<BackendReport | nu
 }
 export async function startBackendReport(uid: string, modality: string): Promise<BackendReport> {
   const context = resolveContext(uid);
+  if (context.reportId) {
+    return validateReport(await request(`/reports/${context.reportId}/`), context);
+  }
   const data = await request('/reports/session/start/', 'POST', {
     study_id: context.studyId, modality: modality === '—' ? '' : modality,
   });

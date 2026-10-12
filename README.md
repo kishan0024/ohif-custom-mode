@@ -18,6 +18,59 @@ new/
 
 ## Use with the existing viewer
 
+### Start Orthanc and the local OHIF viewer
+
+Prerequisites: Docker with Docker Compose, Node.js 18 or newer, and Yarn Classic (the viewer pins Yarn 1.22.22). Start Docker before running the commands below. Paths assume your terminal starts in the parent directory containing both repositories.
+
+Install dependencies once (and again when dependencies change):
+
+```bash
+cd Radiologist-ohif-viewer
+yarn install --frozen-lockfile
+cd ../custom-ohif-viewer
+npm run install:reporting
+```
+
+Start Orthanc in the background from `custom-ohif-viewer`:
+
+```bash
+docker compose -f ../Radiologist-ohif-viewer/mediscribe/docker-compose.yml up -d orthanc
+
+
+
+  docker compose -f ./Radiologist-ohif-viewer/mediscribe/docker-compose.yml up -d orthanc
+```
+
+Start the OHIF development server in the same terminal:
+
+```bash
+npm run dev
+```
+
+This command links the custom packages automatically and starts the viewer with observations and reporting. Leave the terminal running while developing; source edits are picked up by the development server.
+
+| URL | Purpose |
+|-----|---------|
+| http://localhost:8042 | Orthanc Explorer: upload DICOM files |
+| http://localhost:3006 | Local OHIF viewer: expand a study and choose **Observation Viewer** |
+
+The viewer proxies `/pacs/dicom-web` to Orthanc at `http://localhost:8042/dicom-web`. Only the `orthanc` Docker service is needed for this workflow.
+
+To check Orthanc startup or troubleshoot an empty worklist:
+
+```bash
+docker compose -f ../Radiologist-ohif-viewer/mediscribe/docker-compose.yml ps orthanc
+docker compose -f ../Radiologist-ohif-viewer/mediscribe/docker-compose.yml logs --tail=100 orthanc
+```
+
+Stop the viewer with `Ctrl+C`. Stop Orthanc from `custom-ohif-viewer` with:
+
+```bash
+docker compose -f ../Radiologist-ohif-viewer/mediscribe/docker-compose.yml stop orthanc
+```
+
+Uploaded studies persist in the Compose `orthanc_data` volume between restarts.
+
 ### Reporting inside Observation Viewer
 
 The screenshot-based report editor is in `extensions/reporting`, integrated into `modes/observations`. It includes rich-text formatting, templates, patient details, preview, print, and browser-local drafts. See [reporting setup and integration notes](extensions/reporting/README.md).

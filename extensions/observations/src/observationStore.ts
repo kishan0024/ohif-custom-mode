@@ -12,6 +12,8 @@ type StudyState = {
   submitting: boolean;
   error: string | null;
   confirmation: string | null;
+  loading: boolean;
+  loadError: string | null;
 };
 
 /** Session memory only. Refreshing the page discards drafts and demo records. */
@@ -27,6 +29,8 @@ export function createObservationStore(repository: ObservationRepository) {
         submitting: false,
         error: null,
         confirmation: null,
+        loading: false,
+        loadError: null,
       });
     }
     return studies.get(uid)!;
@@ -45,6 +49,19 @@ export function createObservationStore(repository: ObservationRepository) {
       return () => {
         listeners.delete(listener);
       };
+    },
+    async load(uid: string) {
+      if (!repository.list || !uid || getSnapshot(uid).loading) return;
+      update(uid, { loading: true, loadError: null });
+      try {
+        const records = await repository.list(uid);
+        const merged = new Map(records.map(record => [record.id, record]));
+        // Keep submissions completed while the history request was in flight.
+        for (const record of getSnapshot(uid).records) merged.set(record.id, record);
+        update(uid, { loading: false, records: [...merged.values()].sort((a, b) => b.recordedAt.localeCompare(a.recordedAt)) });
+      } catch (error) {
+        update(uid, { loading: false, loadError: error instanceof Error ? error.message : 'Could not load observations.' });
+      }
     },
     setDraft(uid: string, draft: string) {
       if (getSnapshot(uid).submitting) return;
@@ -74,10 +91,10 @@ export function createObservationStore(repository: ObservationRepository) {
           submitting: false,
           confirmation: 'Observation recorded',
         });
-      } catch {
+      } catch (error) {
         update(uid, {
           submitting: false,
-          error: 'The observation could not be recorded. Your text is still here. Try again.',
+          error: `${error instanceof Error ? error.message : 'The observation could not be recorded.'} Your text is still here. Try again.`,
         });
       }
     },

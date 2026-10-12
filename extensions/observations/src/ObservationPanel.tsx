@@ -1,4 +1,4 @@
-import React, { useState, useSyncExternalStore } from "react";
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { useImageViewer } from "@ohif/ui-next";
 import { MAX_OBSERVATION_LENGTH, observationStore } from "./observationStore";
 import "./observations.css";
@@ -11,6 +11,7 @@ export function StudyObservations({
   const state = useSyncExternalStore(observationStore.subscribe, () =>
     observationStore.getSnapshot(studyInstanceUID),
   );
+  useEffect(() => { void observationStore.load(studyInstanceUID); }, [studyInstanceUID]);
 
   return (
     <>
@@ -79,11 +80,18 @@ export function StudyObservations({
             : "Recorded observations"}{" "}
           ({state.records.length})
         </h3>
-        {state.records.length === 0 ? (
+        {state.loading && <p role="status">Loading observations…</p>}
+        {state.loadError && (
+          <div role="alert">
+            <p>{state.loadError}</p>
+            <button type="button" onClick={() => void observationStore.load(studyInstanceUID)}>Retry loading observations</button>
+          </div>
+        )}
+        {state.records.length === 0 && !state.loading && !state.loadError ? (
           <p className="observations-muted">
             No observations yet. Submitted observations will appear here.
           </p>
-        ) : (
+        ) : state.records.length > 0 ? (
           <>
             <p className="observations-history-hint observations-muted">
               All entries for this study. Newest first.
@@ -109,7 +117,7 @@ export function StudyObservations({
               ))}
             </ol>
           </>
-        )}
+        ) : null}
       </section>
     </>
   );

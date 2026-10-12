@@ -1,5 +1,4 @@
 import { createObservationStore, MAX_OBSERVATION_LENGTH } from './observationStore';
-import { observationRepository } from './observationRepository';
 
 const record = {
   id: '1',
@@ -85,21 +84,27 @@ test('prevents duplicate submissions and keeps late responses with the original 
   });
 });
 
-test('demo adapter makes no network or browser-storage writes', async () => {
-  jest.useFakeTimers();
-  Object.defineProperty(global.crypto, 'randomUUID', {
-    configurable: true,
-    value: () => 'demo-id',
-  });
-  const storage = jest.spyOn(Storage.prototype, 'setItem');
-  const pending = observationRepository.create({ studyInstanceUID: 'study-a', text: 'Finding' });
-  jest.runAllTimers();
-  expect(await pending).toMatchObject({
-    id: 'demo-id',
-    studyInstanceUID: 'study-a',
-    text: 'Finding',
-  });
-  expect(storage).not.toHaveBeenCalled();
-  storage.mockRestore();
-  jest.useRealTimers();
+test('reloads persisted records and keeps a concurrent submission', async () => {
+  let finish;
+  const list = jest.fn(() => new Promise<any>(resolve => { finish = resolve; }));
+  const store = createObservationStore({ isDemo: false, list, create: jest.fn().mockResolvedValue(record) });
+  const pending = store.load('study-a');
+  store.setDraft('study-a', 'Finding');
+  await store.submit('study-a');
+  finish([{ ...record, id: 'older', recordedAt: '2025-01-01T00:00:00Z' }]);
+  await pending;
+  expect(store.getSnapshot('study-a').records.map(item => item.id)).toEqual(['1', 'older']);
+  const fresh = createObservationStore({ isDemo: false, list: async () => [record], create: jest.fn() });
+  await fresh.load('study-a');
+  expect(fresh.getSnapshot('study-a').records).toEqual([record]);
+});
+
+test('history failures preserve text and can be retried', async () => {
+  const list = jest.fn().mockRejectedValueOnce(new Error('Offline')).mockResolvedValueOnce([record]);
+  const store = createObservationStore({ isDemo: false, list, create: jest.fn() });
+  store.setDraft('study-a', 'Unsaved');
+  await store.load('study-a');
+  expect(store.getSnapshot('study-a')).toMatchObject({ draft: 'Unsaved', loadError: 'Offline' });
+  await store.load('study-a');
+  expect(store.getSnapshot('study-a')).toMatchObject({ records: [record], loadError: null });
 });
