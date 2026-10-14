@@ -1,3 +1,5 @@
+import { request, resolveContext } from '../../reporting/src/backendReports';
+
 export type ObservationInput = {
   studyInstanceUID: string;
   text: string;
@@ -59,4 +61,3 @@ export const observationRepository: ObservationRepository = {
     return [...new Map(records.map(record => [record.id, record])).values()];
   },
 };
-import { request, resolveContext } from '../../reporting/src/backendReports';

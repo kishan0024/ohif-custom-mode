@@ -108,9 +108,11 @@ Expand a study in the worklist to choose a viewer. Existing mode visibility and 
 
 ## Submission
 
-Users enter an observation and submit it to see **Observation recorded**. The current adapter is a dummy: it makes no database request and uses no localStorage or IndexedDB. Drafts and demo records disappear on page refresh.
-
-When the database endpoint is supplied, replace the adapter in `extensions/observations/src/observationRepository.ts`. See [the extension documentation](extensions/observations/README.md) for the contract.
+Observation submissions now persist through the backend observations API. Apply
+`report.0008_observation` in `Radiologist-report-backend` to create the dedicated
+`report_observations` table. Open the viewer from the main app so it receives
+report/study context and authentication. History reloads from the backend;
+unsent drafts remain in memory. See [the extension documentation](extensions/observations/README.md).
 
 ## Tests
 

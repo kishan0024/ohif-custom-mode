@@ -16,7 +16,7 @@ type StudyState = {
   loadError: string | null;
 };
 
-/** Session memory only. Refreshing the page discards drafts and demo records. */
+/** Drafts stay in session memory; persisted records reload from the backend. */
 export function createObservationStore(repository: ObservationRepository) {
   const studies = new Map<string, StudyState>();
   const listeners = new Set<() => void>();
